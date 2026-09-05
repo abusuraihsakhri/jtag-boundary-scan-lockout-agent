@@ -4,9 +4,10 @@ Domain: Clinical & Biomedical AI
 Standard: CAP / CLSI / ISO Standards
 """
 import datetime
+import math
 from enum import Enum
 from typing import Dict, Any, List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class UrgencyLevel(str, Enum):
@@ -21,15 +22,35 @@ class SystemIntegrityStatus(str, Enum):
     RECALIBRATION_REQUIRED = "RECALIBRATION_REQUIRED"
 
 
+MAX_STRING_FIELD_LENGTH = 256
+MAX_METRIC_VALUE = 1e9
+
+
 class SystemTaskPayload(BaseModel):
-    task_id: str = Field(..., description="Unique task / case identifier")
-    target_identifier: str = Field(..., description="Entity, patient key, or genomic/cryptographic target")
+    task_id: str = Field(..., description="Unique task / case identifier", max_length=MAX_STRING_FIELD_LENGTH)
+    target_identifier: str = Field(..., description="Entity, patient key, or genomic/cryptographic target", max_length=MAX_STRING_FIELD_LENGTH)
     primary_metric: float = Field(..., description="Primary domain measurement or score")
     secondary_metric: float = Field(default=0.0, description="Secondary kinetic or confidence score")
-    status_descriptor: str = Field(default="NOMINAL", description="Status code or phenotype descriptor")
+    status_descriptor: str = Field(default="NOMINAL", description="Status code or phenotype descriptor", max_length=MAX_STRING_FIELD_LENGTH)
     is_critical_flag: bool = Field(default=False, description="Emergency escalation or high priority trigger")
     attributes: Dict[str, Any] = Field(default_factory=dict, description="Metadata key-value pairs")
     timestamp: str = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc).isoformat())
+
+    @field_validator("primary_metric", "secondary_metric")
+    @classmethod
+    def validate_metric_finite(cls, v: float) -> float:
+        if not math.isfinite(v):
+            raise ValueError(f"Metric value must be finite, got {v}")
+        if abs(v) > MAX_METRIC_VALUE:
+            raise ValueError(f"Metric value magnitude exceeds maximum allowed ({MAX_METRIC_VALUE})")
+        return v
+
+    @field_validator("task_id", "target_identifier", "status_descriptor")
+    @classmethod
+    def validate_non_empty_string(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("Field must be a non-empty string")
+        return v.strip()
 
 
 class AgentAlert(BaseModel):
