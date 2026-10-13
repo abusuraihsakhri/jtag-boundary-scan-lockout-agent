@@ -15,7 +15,7 @@ def create_app():
 
         app = FastAPI(
             title="JTAG / SWD Debug Port Lockout & Chip-Security Fuse Agent",
-            description="Audits IEEE 1149.1 JTAG state machines, boundary scan registers, and verifies hardware cryptographic fuse blown states.",
+            description="Classifies supplied JTAG-related telemetry using illustrative thresholds; does not probe hardware or verify fuse states.",
             version="2.0.0-FRONTIER",
         )
 

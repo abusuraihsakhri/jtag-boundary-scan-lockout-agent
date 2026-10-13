@@ -60,7 +60,7 @@ class eFuseLockoutAuditorAgent:
 
 
 class JTAGSecurityCoordinator:
-    """Executive Coordinator & Air-Gapped Supervisory Intelligence."""
+    """In-memory coordinator for deterministic, rule-based telemetry classification."""
     def __init__(self):
         self.sub_1 = TAPStateMachineAgent()
         self.sub_2 = BoundaryScanRegisterAgent()
@@ -105,6 +105,6 @@ class JTAGSecurityCoordinator:
         if "status" in q or "ledger" in q:
             return f"JTAG / SWD Debug Port Lockout & Chip-Security Fuse Agent currently managing {len(self.execution_ledger)} execution tasks in air-gapped memory."
         elif "standard" in q or "spec" in q:
-            return "Active runtime operating strictly according to IEEE 1149.1 / IEEE 1149.7 Standards specifications."
+            return "IEEE 1149.1 / IEEE 1149.7 specifications provide background only; these thresholds are illustrative and no conformance is certified."
         else:
-            return f"JTAG / SWD Debug Port Lockout & Chip-Security Fuse Agent executive coordinator online. Zero-telemetry on-premises surveillance active."
+            return f"JTAG / SWD Debug Port Lockout & Chip-Security Fuse Agent executive coordinator online. No external hardware probe or device verification is performed."

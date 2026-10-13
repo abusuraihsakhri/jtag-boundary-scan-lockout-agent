@@ -1,6 +1,6 @@
 """
 Supervisor Orchestrator & Operations Intelligence for Jtag Boundary Scan Lockout Agent.
-Domain: Clinical & Biomedical AI
+Domain: Hardware Security
 """
 import uuid
 from typing import Dict, Any, List, Optional
@@ -75,5 +75,5 @@ class SystemSupervisor:
 
     def query_supervisory_chat(self, query: str) -> str:
         PHIGuard.assert_no_phi(query)
-        prompt = f"Supervisor inquiry for Jtag Boundary Scan Lockout Agent under CAP / CLSI / ISO Standards: {query}"
+        prompt = f"Supervisor inquiry for Jtag Boundary Scan Lockout Agent under Illustrative telemetry thresholds (not standards certification): {query}"
         return self.llm.invoke(prompt)
