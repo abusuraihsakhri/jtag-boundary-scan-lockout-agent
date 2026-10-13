@@ -45,3 +45,14 @@ def test_api_health_and_audit():
     })
     assert result.status_code == 200
     assert result.json()["total_alerts"] >= 1
+
+def test_batch_rejects_same_input_and_output(tmp_path, monkeypatch):
+    from cli import main as enterprise_main
+    from jtag_lockout.cli import main as legacy_main
+    monkeypatch.chdir(tmp_path)
+    source = tmp_path / "cases.csv"
+    original = "task_id,target_identifier,primary_metric,secondary_metric,status_descriptor\\nT1,DEVICE-1,1,1,NOMINAL\\n"
+    source.write_text(original, encoding="utf-8")
+    for main in (enterprise_main, legacy_main):
+        assert main(["batch", "-i", "cases.csv", "-o", "cases.csv"]) == 1
+        assert source.read_text(encoding="utf-8") == original
