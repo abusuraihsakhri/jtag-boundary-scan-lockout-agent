@@ -87,6 +87,8 @@ def main(argv=None):
         try:
             in_path = _resolve_safe_path(args.input, must_exist=True)
             out_path = _resolve_safe_path(args.output, must_exist=False)
+            if in_path == out_path:
+                raise ValueError("Input and output CSV paths must be different")
         except (ValueError, FileNotFoundError) as e:
             print(f"Error: {e}", file=sys.stderr)
             return 1
@@ -96,7 +98,7 @@ def main(argv=None):
             fieldnames = list(reader.fieldnames or [])
             rows = list(reader)
 
-        out_fields = fieldnames + ["overall_status", "total_alerts", "critical_count", "consensus_summary"]
+        out_fields = list(dict.fromkeys(fieldnames + ["overall_status", "total_alerts", "critical_count", "consensus_summary"]))
         out_rows = []
         errors = 0
         for idx, r in enumerate(rows):
