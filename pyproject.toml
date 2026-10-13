@@ -1,27 +1,35 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "jtag-boundary-scan-lockout-engine"
-version = "2.0.0"
-description = "JTAG / SWD Debug Port Lockout & Chip-Security Fuse Engine"
+version = "2.0.1"
+description = "Rule-based JTAG/SWD security telemetry assessment demonstrator"
 readme = "README.md"
-authors = [{ name = "Dr. Abu Suraih Sakhri", email = "abusuraih@example.com" }]
+authors = [{ name = "Dr. Abu Suraih Sakhri" }]
 license = { text = "MIT" }
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Topic :: Security/Cryptography",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Security",
 ]
-requires-python = ">=3.9"
-dependencies = []
+requires-python = ">=3.10"
+dependencies = ["pydantic>=2.0,<3"]
+
+[project.optional-dependencies]
+api = ["fastapi>=0.100,<1", "uvicorn>=0.23,<1"]
+dev = ["pytest>=7,<10", "httpx>=0.24,<1"]
 
 [project.scripts]
 jtag-boundary-scan-lockout-engine = "jtag_lockout.cli:main"
+jtag-lockout-agent = "cli:main"
 
 [project.urls]
-Homepage = "https://github.com/abusuraihsakhri/jtag-boundary-scan-lockout-engine"
-Repository = "https://github.com/abusuraihsakhri/jtag-boundary-scan-lockout-engine.git"
+Homepage = "https://github.com/abusuraihsakhri/jtag-boundary-scan-lockout-agent"
+Repository = "https://github.com/abusuraihsakhri/jtag-boundary-scan-lockout-agent"
+
+[tool.setuptools]
+packages = ["agents", "jtag_lockout"]
+py-modules = ["cli", "enrichment", "simulator", "jtag_lockout_app"]
