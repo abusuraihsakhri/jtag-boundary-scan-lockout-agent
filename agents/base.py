@@ -92,7 +92,7 @@ class AuditTrail:
             "current_hash": signature,
         }
         self.logs.append(entry)
-        return entry
+        return deepcopy(entry)
 
     def verify_integrity(self) -> bool:
         """Validate the complete HMAC chain, not just the previous-hash pointers."""
