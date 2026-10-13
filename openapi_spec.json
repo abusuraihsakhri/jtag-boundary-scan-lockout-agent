@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Jtag Boundary Scan Lockout Engine API",
-    "description": "Enterprise Distributed Component Platform (Clinical & Cryptographic AI) adhering to CAP / CLSI / NIST Standards.",
+    "description": "Rule-based classification of user-supplied JTAG/SWD-related telemetry. No physical hardware or fuse verification.",
     "version": "3.0.0-ENTERPRISE",
     "contact": {
       "name": "Dr. Abu Suraih Sakhri",
@@ -15,14 +15,14 @@
         "summary": "Health and metadata check",
         "responses": {
           "200": {
-            "description": "System optimal"
+            "description": "Server process healthy (no hardware status implied)"
           }
         }
       }
     },
     "/metrics": {
       "get": {
-        "summary": "Prometheus operational metrics",
+        "summary": "Retrieve process-local counters as JSON",
         "responses": {
           "200": {
             "description": "Prometheus text metrics"
@@ -32,7 +32,7 @@
     },
     "/api/audit": {
       "post": {
-        "summary": "Dispatch task payload across specialized workers",
+        "summary": "Evaluate supplied telemetry under illustrative application thresholds",
         "requestBody": {
           "content": {
             "application/json": {
@@ -69,14 +69,17 @@
         },
         "responses": {
           "200": {
-            "description": "Consensus dossier with HMAC signature"
+            "description": "Rule-based dossier with a reference to an in-memory HMAC-signed audit record"
+          },
+          "422": {
+            "description": "Validation or identifier filtering failure"
           }
         }
       }
     },
     "/api/chat": {
       "post": {
-        "summary": "Air-gapped supervisory conversational assistant",
+        "summary": "Deterministic local reference response (not hardware interrogation)",
         "requestBody": {
           "content": {
             "application/json": {
@@ -103,7 +106,7 @@
     },
     "/api/audit/logs": {
       "get": {
-        "summary": "Retrieve and cryptographically verify HMAC audit trail",
+        "summary": "Retrieve in-memory audit metadata and verify HMAC chain",
         "responses": {
           "200": {
             "description": "Cryptographic audit trail"
