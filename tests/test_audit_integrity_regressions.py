@@ -1,11 +1,11 @@
 """Regressions for audit chain authenticity and public API validation."""
-import pytest
 from agents.base import AuditTrail
 from agents.models import SystemTaskPayload
 
 def test_audit_chain_detects_metadata_and_signature_tampering():
     audit = AuditTrail(secret_key="fixture-key-not-a-production-secret")
-    first = audit.log("operator", "supervisor", "AUDIT", {"device": "D1"})
+    returned = audit.log("operator", "supervisor", "AUDIT", {"device": "D1"})
+    returned["actor"] = "changed-outside"
     audit.log("operator", "supervisor", "AUDIT", {"device": "D2"})
     assert audit.verify_integrity()
     audit.logs[0]["actor"] = "forged"
@@ -51,7 +51,7 @@ def test_batch_rejects_same_input_and_output(tmp_path, monkeypatch):
     from jtag_lockout.cli import main as legacy_main
     monkeypatch.chdir(tmp_path)
     source = tmp_path / "cases.csv"
-    original = "task_id,target_identifier,primary_metric,secondary_metric,status_descriptor\\nT1,DEVICE-1,1,1,NOMINAL\\n"
+    original = "task_id,target_identifier,primary_metric,secondary_metric,status_descriptor\nT1,DEVICE-1,1,1,NOMINAL\n"
     source.write_text(original, encoding="utf-8")
     for main in (enterprise_main, legacy_main):
         assert main(["batch", "-i", "cases.csv", "-o", "cases.csv"]) == 1
