@@ -18,8 +18,8 @@ class FrontierDomainEngine:
         if value > cls.PRIMARY_BOUND:
             return {
                 "summary": "Primary Domain Boundary Deviation",
-                "details": f"Parameter value ({value:.3f}) exceeds operational threshold ({cls.PRIMARY_BOUND:.1f}) under IEEE 1149.1 / IEEE 1149.7 Standards.",
-                "remediation": "Engage parameter recalibration and algorithmic verification routine.",
+                "details": f"Parameter value ({value:.3f}) exceeds illustrative application threshold ({cls.PRIMARY_BOUND:.1f}); this is not an IEEE conformance finding.",
+                "remediation": "Review device-specific acceptance criteria and verify source measurements.",
             }
         return None
 
@@ -29,7 +29,7 @@ class FrontierDomainEngine:
             return {
                 "summary": "Critical Domain Condition Triggered",
                 "details": f"Secondary index ({value:.3f}) with CriticalFlag={is_critical} demands prioritized resolution.",
-                "remediation": "Initiate automated fail-safe state machine and telemetry alert dispatch.",
+                "remediation": "Escalate for independent device-level inspection; no hardware action is performed.",
             }
         return None
 
@@ -39,7 +39,7 @@ class FrontierDomainEngine:
         if any(flag in desc_upper for flag in ["VIOLATION", "DISCORDANT", "ANOMALY", "MUTANT", "LEAK"]):
             return {
                 "summary": "Specification / Protocol Anomaly Identified",
-                "details": f"Telemetry status flag '{descriptor}' violates IEEE 1149.1 / IEEE 1149.7 Standards conformance matrix.",
-                "remediation": "Execute automated rollback or secondary consensus verification.",
+                "details": f"Telemetry status flag '{descriptor}' contains a predefined anomaly keyword; hardware/protocol conformance is not established.",
+                "remediation": "Review the source telemetry and confirm through an authorized hardware test.",
             }
         return None
