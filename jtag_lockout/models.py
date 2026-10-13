@@ -1,7 +1,7 @@
 """
 Data Models & Telemetry Definitions for JTAG / SWD Debug Port Lockout & Chip-Security Fuse Agent.
 Domain: Hardware Security
-Standard: IEEE 1149.1 / IEEE 1149.7 Standards
+Standard: IEEE 1149.1 / IEEE 1149.7 (reference only; no conformance claim)
 """
 import datetime
 import math
@@ -65,7 +65,7 @@ class AgentTelemetryAlert:
     summary: str
     technical_details: str
     actionable_remediation: str
-    standard_reference: str = "IEEE 1149.1 / IEEE 1149.7 Standards"
+    standard_reference: str = "IEEE 1149.1 / IEEE 1149.7 (reference only; no conformance claim)"
     timestamp: str = field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc).isoformat())
 
     def to_dict(self) -> Dict[str, Any]:
